@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { tourData } from "@/data/tour-data";

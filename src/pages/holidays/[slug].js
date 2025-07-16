@@ -1,4 +1,6 @@
 // pages/holidays/[slug].js
+/* eslint-disable react/no-unescaped-entities */
+
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Header from "@/components/Header";

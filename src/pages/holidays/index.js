@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+
 import packageData from "@/data/package-data";
 import Header from "@/components/Header";
 import Image from "next/image";

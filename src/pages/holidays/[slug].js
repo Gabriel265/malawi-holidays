@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import packageData from "@/data/package-data";
 import carHireData from "@/data/carhire-data";
@@ -8,6 +8,8 @@ import FullCustomizationPanel from "@/components/FullCustomizationPanel";
 const HolidayPackagePage = () => {
   const router = useRouter();
   const { slug } = router.query;
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState("");
 
   const packageItem = packageData.find((item) => item.slug === slug);
 
@@ -59,7 +61,34 @@ const HolidayPackagePage = () => {
       <div className="mb-10 bg-blue-100 p-6 rounded-xl text-center">
         <h2 className="text-2xl font-bold mb-2">Ready to book your holiday?</h2>
         <p className="mb-4">Let us help you plan the perfect getaway.</p>
-        <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+
+        {/* Toggle Calendar Button */}
+        <button
+          onClick={() => setCalendarOpen(!calendarOpen)}
+          className="mb-4 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+          aria-expanded={calendarOpen}
+          aria-controls="booking-calendar"
+        >
+          {calendarOpen ? "Hide Calendar" : "Select Booking Date"}
+        </button>
+
+        {/* Collapsible Calendar */}
+        {calendarOpen && (
+          <div id="booking-calendar" className="mb-4">
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              className="p-2 rounded border border-gray-300"
+              min={new Date().toISOString().split("T")[0]} // Disable past dates
+            />
+            {selectedDate && (
+              <p className="mt-2 text-green-700">Selected date: {selectedDate}</p>
+            )}
+          </div>
+        )}
+
+        <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
           Book Now
         </button>
       </div>

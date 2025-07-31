@@ -251,7 +251,7 @@ export default function Hotels() {
                 <X className="w-5 h-5 text-gray-600" />
               </button>
 
-              <HolidayFlyerUI data={selected} />
+              <HolidayFlyerUI data={selected} onClose={() => setSelected(null)} />
               
               <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 p-4 sm:p-6 border-t bg-gray-50">
                 <button

@@ -1,236 +1,179 @@
-import Image from "next/image";
-import { Drum, TreePalm, Utensils, Mountain, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import heroSlides from "@/data/hero-data";
 
 export default function Hero() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  const features = [
-    {
-      icon: <Mountain size={28} />,
-      title: "Breathtaking Landscapes",
-      desc: "Unspoiled lake shores, mountains and valleys that will take your breath away.",
-    },
-    {
-      icon: <Drum size={28} />,
-      title: "Vibrant Culture",
-      desc: "Rich festivals, traditional music, studio tours, and local artisan experiences.",
-    },
-    {
-      icon: <Utensils size={28} />,
-      title: "Delicious Cuisine",
-      desc: "Authentic food tours, street eats, and immersive kitchen experiences.",
-    },
-    {
-      icon: <TreePalm size={28} />,
-      title: "Warm Hospitality",
-      desc: "Experience the renowned kindness and welcoming spirit of Malawian people.",
-    },
-  ];
+  const totalSlides = heroSlides.length;
 
-  // Calculate how many cards to show based on screen size
-  const getCardsToShow = () => {
-    if (typeof window === 'undefined') return 1;
-    if (window.innerWidth >= 1024) return 3; // lg screens
-    if (window.innerWidth >= 768) return 2;  // md screens
-    return 1; // sm screens
+  // Background image follows the currentSlide
+  const backgroundImage = heroSlides[currentSlide].image;
+
+  // Show next 3 thumbnails after currentSlide (wrap around)
+  const visibleSlidesCount = Math.min(3, totalSlides - 1);
+
+  const getVisibleSlides = () => {
+    if (totalSlides <= 1) return [];
+    let slides = [];
+    for (let i = 1; i <= visibleSlidesCount; i++) {
+      const idx = (currentSlide + i) % totalSlides;
+      slides.push(heroSlides[idx]);
+    }
+    return slides;
   };
 
-  const [cardsToShow, setCardsToShow] = useState(1);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setCardsToShow(getCardsToShow());
-    };
-    
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Auto-scroll functionality
-  useEffect(() => {
-    if (!isAutoPlaying) return;
-    
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => {
-        const maxIndex = features.length - cardsToShow;
-        return prev >= maxIndex ? 0 : prev + 1;
-      });
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, features.length, cardsToShow]);
-
   const nextSlide = () => {
-    setCurrentIndex((prev) => {
-      const maxIndex = features.length - cardsToShow;
-      return prev >= maxIndex ? 0 : prev + 1;
-    });
-    setIsAutoPlaying(false);
+    setCurrentSlide((prev) => (prev + 1) % totalSlides);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => {
-      const maxIndex = features.length - cardsToShow;
-      return prev <= 0 ? maxIndex : prev - 1;
-    });
-    setIsAutoPlaying(false);
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
   };
 
-  const goToSlide = (index) => {
-    const maxIndex = features.length - cardsToShow;
-    setCurrentIndex(Math.min(index, maxIndex));
+  // Auto-play functionality
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % totalSlides);
+    }, 4000); // Change slide every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, totalSlides]);
+
+  // Pause auto-play when user interacts
+  const handleUserInteraction = (action) => {
     setIsAutoPlaying(false);
+    action();
+    // Resume auto-play after 8 seconds of no interaction
+    setTimeout(() => setIsAutoPlaying(true), 8000);
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-between overflow-hidden">
-      {/* Background with parallax effect */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-fixed transform scale-105"
-        style={{ backgroundImage: "url('/assets/hero-bg.jpeg')" }}
+    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 ease-in-out"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('${backgroundImage}')`,
+        }}
       />
-      
-      {/* Enhanced overlay with gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70" />
-      
-      {/* Main content container */}
-      <div className="relative z-10 flex flex-col justify-between min-h-screen">
-        
-        {/* Hero content */}
-        <div className="flex-1 flex flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20">
-          <div className="max-w-4xl mx-auto">
-            {/* Badge */}
-            <div className="inline-flex items-center px-4 py-2 bg-cream/10 backdrop-blur-sm rounded-full text-cream text-sm font-medium mb-6 border border-cream/20">
-              <span className="w-2 h-2 bg-accent rounded-full mr-2 animate-pulse"></span>
-              The Warm Heart of Africa
-            </div>
-            
-            {/* Main heading */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold mb-6 text-white leading-tight">
-              Discover 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary"> Magical</span>
-              <br />
-              Memories
-            </h1>
-            
-            {/* Subtitle */}
-            <p className="text-lg sm:text-xl lg:text-2xl mb-8 font-light max-w-3xl text-gray-200 leading-relaxed">
-              Explore the untamed beauty of Malawi through unforgettable tours and authentic cultural experiences
+
+      {/* Main Content */}
+      <div className="relative z-40 flex flex-col xl:flex-row items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-8 sm:py-12 md:py-16 lg:py-20 xl:py-32 min-h-screen">
+        {/* Left Content */}
+        <div className="flex-1 max-w-full xl:max-w-2xl mb-8 sm:mb-12 xl:mb-0 text-center xl:text-left">
+          <div className="text-xs sm:text-sm font-medium text-yellow-400 mb-3 sm:mb-4 tracking-wider uppercase">
+            Experience Malawi
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight sm:leading-none mb-6 sm:mb-8">
+            THE WARM <br />
+            <span className="text-yellow-400">HEART OF AFRICA</span>
+          </h1>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center xl:justify-start space-y-4 sm:space-y-0 sm:space-x-4 mb-6 sm:mb-8">
+            <div className="w-8 sm:w-12 h-0.5 bg-yellow-400"></div>
+            <p className="text-gray-300 text-base sm:text-lg max-w-sm sm:max-w-md leading-relaxed text-center xl:text-left">
+              Uncover untold stories, vibrant traditions, rich music, and wild adventures across Malawi.
             </p>
-            
-            {/* CTA buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a
-                href="#tours"
-                className="group inline-flex items-center bg-primary hover:bg-accent transition-all duration-500 text-white font-semibold px-8 py-4 rounded-full text-lg shadow-2xl hover:shadow-3xl transform hover:-translate-y-1 hover:scale-105 w-full sm:w-auto justify-center"
-              >
-                Explore Tours
-                <svg className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
-              <a
-                href="#about"
-                className="inline-flex items-center bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 text-white font-medium px-8 py-4 rounded-full text-lg border border-white/30 hover:border-white/50 w-full sm:w-auto justify-center"
-              >
-                Learn More
-              </a>
-            </div>
           </div>
+
+          <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium text-xs sm:text-sm tracking-wider transition-all duration-300 transform hover:scale-105">
+            EXPLORE TOURS
+          </button>
         </div>
-        
-        {/* Compact feature carousel footer */}
-        <div className="relative backdrop-blur-md bg-gradient-to-t from-black/80 to-transparent py-4">
-          {/* Compact header */}
-          <div className="text-center mb-4">
-            <h3 className="text-white text-lg font-serif font-semibold mb-1">
-              Why Visit Malawi?
-            </h3>
-            <div className="w-12 h-0.5 bg-gradient-to-r from-accent to-primary mx-auto rounded-full"></div>
-          </div>
-          
-          {/* Carousel container */}
-          <div 
-            className="relative overflow-hidden"
-            onMouseEnter={() => setIsAutoPlaying(false)}
-            onMouseLeave={() => setIsAutoPlaying(true)}
-          >
-            {/* Cards container with smooth animation */}
-            <div 
-              className="flex transition-transform duration-700 ease-in-out"
-              style={{ 
-                transform: `translateX(-${currentIndex * (100 / cardsToShow)}%)`,
-              }}
-            >
-              {features.map((item, index) => (
+
+        {/* Right Content - Carousel Thumbnails */}
+        <div className="flex-1 w-full max-w-full xl:max-w-4xl">
+          <div className="relative">
+            {/* Mobile: Single slide view, Tablet: 2 slides, Desktop: 3 slides */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8">
+              {getVisibleSlides().map((slide, idx) => (
                 <div
-                  key={index}
-                  className="flex-shrink-0 px-2 sm:px-3"
-                  style={{ width: `${100 / cardsToShow}%` }}
+                  key={idx}
+                  className={`relative group cursor-pointer transform transition-all duration-500 hover:scale-105 ${
+                    idx === 1 ? "lg:scale-110 z-10" : "lg:scale-95"
+                  } ${
+                    idx >= 2 ? "hidden lg:block" : "" // Hide 3rd slide on mobile/tablet
+                  } ${
+                    idx >= 1 ? "hidden sm:block" : "" // Hide 2nd slide on mobile
+                  }`}
+                  onClick={() => {
+                    // Find index in heroSlides and update currentSlide
+                    const slideIndex = heroSlides.findIndex((s) => s.image === slide.image);
+                    if (slideIndex !== -1) {
+                      handleUserInteraction(() => setCurrentSlide(slideIndex));
+                    }
+                  }}
                 >
-                  <div className="group relative bg-white/10 hover:bg-white/20 backdrop-blur-lg rounded-xl p-4 transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl border border-white/20 hover:border-white/40 h-full">
-                    {/* Gradient overlay on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    
-                    <div className="relative z-10 flex items-start space-x-3">
-                      {/* Compact icon */}
-                      <div className="flex-shrink-0 inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-accent to-primary rounded-lg text-white shadow-lg group-hover:shadow-xl transition-shadow duration-300">
-                        {item.icon}
-                      </div>
-                      
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-serif font-semibold text-white text-base mb-1 group-hover:text-cream transition-colors duration-300">
-                          {item.title}
-                        </h4>
-                        <p className="text-gray-200 text-xs leading-relaxed group-hover:text-white transition-colors duration-300 line-clamp-2">
-                          {item.desc}
-                        </p>
-                      </div>
+                  <div className="relative h-48 sm:h-60 md:h-72 lg:h-80 rounded-xl sm:rounded-2xl overflow-hidden">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center"
+                      style={{
+                        backgroundImage: `url('${slide.image}')`,
+                        filter: idx === 1 ? "brightness(1.1)" : "brightness(0.75)",
+                      }}
+                    />
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+
+                    {/* Caption */}
+                    <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-6">
+                      <p className="text-xs sm:text-sm text-yellow-400 font-semibold">{slide.caption}</p>
                     </div>
+
+                    {/* Hover Effect */}
+                    <div className="absolute inset-0 bg-yellow-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
                 </div>
               ))}
             </div>
-            
-            {/* Navigation buttons */}
-            <button
-              onClick={prevSlide}
-              className="absolute left-1 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 hover:border-white/40 rounded-full p-2 text-white transition-all duration-300 hover:scale-110 z-10"
-              aria-label="Previous slide"
-            >
-              <ChevronLeft size={16} />
-            </button>
-            
-            <button
-              onClick={nextSlide}
-              className="absolute right-1 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 hover:border-white/40 rounded-full p-2 text-white transition-all duration-300 hover:scale-110 z-10"
-              aria-label="Next slide"
-            >
-              <ChevronRight size={16} />
-            </button>
-          </div>
-          
-          {/* Compact dot indicators */}
-          <div className="flex justify-center mt-3 space-x-1">
-            {Array.from({ length: Math.ceil(features.length / cardsToShow) }).map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                  index === Math.floor(currentIndex / cardsToShow) 
-                    ? 'bg-accent w-4' 
-                    : 'bg-white/40 hover:bg-white/60'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
+
+            {/* Navigation Controls */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3 sm:space-x-4">
+                <button
+                  onClick={() => handleUserInteraction(prevSlide)}
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/30 flex items-center justify-center hover:bg-yellow-500 hover:border-yellow-500 transition-all duration-300 group"
+                >
+                  <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 group-hover:text-white" />
+                </button>
+                <button
+                  onClick={() => handleUserInteraction(nextSlide)}
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/30 flex items-center justify-center hover:bg-yellow-500 hover:border-yellow-500 transition-all duration-300 group"
+                >
+                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:text-white" />
+                </button>
+              </div>
+
+              <div className="text-right">
+                <div className="text-2xl sm:text-3xl font-bold">{String(currentSlide + 1).padStart(2, "0")}</div>
+                <div className="text-xs sm:text-sm text-gray-400">
+                  {String(currentSlide + 1).padStart(2, "0")} / {String(totalSlides).padStart(2, "0")}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+
+      {/* Bottom Indicators - Hidden on very small screens */}
+      <div className="absolute bottom-4 sm:bottom-8 left-4 sm:left-8 z-40 hidden sm:block">
+        <div className="flex items-center space-x-2">
+          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-yellow-400"></div>
+          <div className="w-6 sm:w-8 h-0.5 bg-yellow-400"></div>
+        </div>
+      </div>
+
+      <div className="absolute bottom-4 sm:bottom-8 right-4 sm:right-8 z-40 hidden sm:block">
+        <div className="flex flex-col items-center space-y-2">
+          <div className="text-xs text-gray-400 rotate-90 origin-center whitespace-nowrap">SCROLL</div>
+          <div className="w-0.5 h-8 sm:h-12 bg-gradient-to-b from-yellow-400 to-transparent"></div>
+        </div>
+      </div>
+    </div>
   );
 }

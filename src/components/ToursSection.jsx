@@ -146,8 +146,7 @@ export default function ToursSection() {
               <p className="text-sm text-gray-600">
                 {filteredTours.length === 0 
                   ? "No tours found" 
-                  : `${filteredTours.length} tour${filteredTours.length !== 1 ? 's' : ''} available`
-                }
+                  : `${filteredTours.length} tour${filteredTours.length !== 1 ? 's' : ''} available`}
               </p>
             </div>
           </div>
@@ -165,12 +164,12 @@ export default function ToursSection() {
                 <Image
                   src={tour.image}
                   alt={tour.title}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{ objectFit: "cover" }}
                   className="transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
+
                 {/* Favorite Button */}
                 <button className="absolute top-4 right-4 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-all duration-200 opacity-0 group-hover:opacity-100">
                   <svg className="w-4 h-4 text-gray-600 hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,7 +187,7 @@ export default function ToursSection() {
                   <p className="text-sm md:text-base text-gray-600 mb-4 line-clamp-3 leading-relaxed">
                     {tour.description.slice(0, 120)}...
                   </p>
-                  
+
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">

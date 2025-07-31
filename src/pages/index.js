@@ -1,15 +1,19 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import WhyMalawi from "@/components/WhyMalawi";
-import ToursSection from "@/components/ToursSection";
+import FeaturedTours from "@/components/FeaturedTours";
+import FeaturedHolidays from "@/components/FeaturedHolidays";
 import gallery from "@/components/Gallery";
+import HighlightsGrid from "@/components/HighlightsGrid";
 
 export default function Home() {
   return (
     <>
       <Header/>
       <Hero variant="transparent"/>
-      <ToursSection variant="light"/>
+       <FeaturedTours variant="light"/>
+      <FeaturedHolidays variant="light"/>
+      <HighlightsGrid variant="light"/>
       <gallery variant="light"/>
     </>
   );

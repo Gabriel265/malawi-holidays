@@ -316,7 +316,7 @@ export default function CarHire() {
               )}
               
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-6">
-                <h4 className="text-lg font-semibold mb-4">What's Included</h4>
+                <h4 className="text-lg font-semibold mb-4">What&apos;s Included</h4>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>

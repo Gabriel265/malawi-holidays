@@ -65,23 +65,23 @@ export default function Hero() {
       <div className="relative z-40 flex flex-col xl:flex-row items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-8 sm:py-12 md:py-16 lg:py-20 xl:py-32 min-h-screen">
         {/* Left Content */}
         <div className="flex-1 max-w-full xl:max-w-2xl mb-8 sm:mb-12 xl:mb-0 text-center xl:text-left">
-          <div className="text-xs sm:text-sm font-medium text-yellow-400 mb-3 sm:mb-4 tracking-wider uppercase">
+          <div className="text-xs sm:text-sm font-medium text-pink-400 mb-3 sm:mb-4 tracking-wider uppercase">
             Experience Malawi
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight sm:leading-none mb-6 sm:mb-8">
             AFRICA'S WARM <br />
-            <span className="text-yellow-400">HEART, WILD SOUL</span>
+            <span className="text-pink-400">HEART, WILD SOUL</span>
           </h1>
 
           <div className="flex flex-col sm:flex-row items-center justify-center xl:justify-start space-y-4 sm:space-y-0 sm:space-x-4 mb-6 sm:mb-8">
-            <div className="w-8 sm:w-12 h-0.5 bg-yellow-400"></div>
+            <div className="w-8 sm:w-12 h-0.5 bg-pink-400"></div>
             <p className="text-gray-300 text-base sm:text-lg max-w-sm sm:max-w-md leading-relaxed text-center xl:text-left">
               Uncover untold stories, vibrant traditions, rich music, and wild adventures across Malawi.
             </p>
           </div>
 
-          <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium text-xs sm:text-sm tracking-wider transition-all duration-300 transform hover:scale-105">
+          <button className="bg-pink-500 hover:bg-pink-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium text-xs sm:text-sm tracking-wider transition-all duration-300 transform hover:scale-105">
             EXPLORE TOURS
           </button>
         </div>
@@ -122,7 +122,7 @@ export default function Hero() {
 
                     {/* Caption */}
                     <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-6">
-                      <p className="text-xs sm:text-sm text-yellow-400 font-semibold">{slide.caption}</p>
+                      <p className="text-xs sm:text-sm text-pink-400 font-semibold">{slide.caption}</p>
                     </div>
 
                     {/* Hover Effect */}
@@ -163,15 +163,15 @@ export default function Hero() {
       {/* Bottom Indicators - Hidden on very small screens */}
       <div className="absolute bottom-4 sm:bottom-8 left-4 sm:left-8 z-40 hidden sm:block">
         <div className="flex items-center space-x-2">
-          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-yellow-400"></div>
-          <div className="w-6 sm:w-8 h-0.5 bg-yellow-400"></div>
+          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-pink-400"></div>
+          <div className="w-6 sm:w-8 h-0.5 bg-pink-400"></div>
         </div>
       </div>
 
       <div className="absolute bottom-4 sm:bottom-8 right-4 sm:right-8 z-40 hidden sm:block">
         <div className="flex flex-col items-center space-y-2">
           <div className="text-xs text-gray-400 rotate-90 origin-center whitespace-nowrap">SCROLL</div>
-          <div className="w-0.5 h-8 sm:h-12 bg-gradient-to-b from-yellow-400 to-transparent"></div>
+          <div className="w-0.5 h-8 sm:h-12 bg-gradient-to-b from-pink-400 to-transparent"></div>
         </div>
       </div>
     </div>

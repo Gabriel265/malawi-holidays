@@ -1,5 +1,5 @@
 import { useState } from "react";
-import accommodations from "@/data/accommodations-data";
+import accommodations from "@/data/accomodations-data";
 import HolidayFlyerUI from "@/components/HolidayFlyerUI";
 import Header from "@/components/Header";
 import { Search, Filter, MapPin, Star, Heart, X, Plus } from "lucide-react";

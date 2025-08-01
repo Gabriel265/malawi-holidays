@@ -70,8 +70,8 @@ export default function Hero() {
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight sm:leading-none mb-6 sm:mb-8">
-            THE WARM <br />
-            <span className="text-yellow-400">HEART OF AFRICA</span>
+            AFRICA'S WARM <br />
+            <span className="text-yellow-400">HEART, WILD SOUL</span>
           </h1>
 
           <div className="flex flex-col sm:flex-row items-center justify-center xl:justify-start space-y-4 sm:space-y-0 sm:space-x-4 mb-6 sm:mb-8">
